@@ -126,9 +126,11 @@ class SelectableFragment
                 isEnd: edgeUpdate.type == SelectionEventType.endEdgeUpdate);
           case TextGranularity.document:
           case TextGranularity.line:
+          case TextGranularity.paragraph:
+            // TODO(Ron): Support other granularities.
             assert(
                 false,
-                'Moving the selection edge by line or '
+                'Moving the selection edge by line, paragraph or '
                 'document is not supported.');
         }
         break;
@@ -160,6 +162,9 @@ class SelectableFragment
           directionallyExtendSelection.direction,
         );
         break;
+      case SelectionEventType.selectParagraph:
+        // TODO(Ron): Support other granularities.
+        assert(false, 'Selection by paragraph is not supported.');
     }
 
     if (existingSelectionStart != textSelectionStart ||
@@ -672,7 +677,10 @@ class SelectableFragment
           result = SelectionResult.end;
         }
         break;
-    }
+      case TextGranularity.paragraph:
+        // TODO(Ron): Support other granularities.
+        return SelectionResult.none;
+  }
 
     if (isExtent) {
       textSelectionEnd = newPosition;
